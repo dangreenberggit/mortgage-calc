@@ -1,0 +1,95 @@
+{
+  "project_overview": {
+    "name": "mortgage_calculator_website",
+    "purpose": "agent_controlled_calculations_via_google_sheets",
+    "architecture": "each_user_gets_personal_sheet_copy"
+  },
+  "tech_stack": {
+    "framework": "tanstack_start",
+    "runtime": "bun",
+    "database": "postgresql_with_bun_sql",
+    "ui": "tailwind_v4_daisyui",
+    "apis": "google_sheets_drive_apis"
+  },
+  "setup_sequence": {
+    "phase_1": "create_tanstack_project_with_bun",
+    "phase_2": "install_tailwind_v4_and_daisyui",
+    "phase_3": "setup_google_cloud_apis_and_credentials",
+    "phase_4": "configure_database_with_drizzle_orm",
+    "phase_5": "implement_calculator_logic_with_server_functions",
+    "phase_6": "add_authentication_and_user_management",
+    "phase_7": "deploy_and_test"
+  },
+  "current_status": {
+    "phase_1": "completed_tanstack_start_project_exists",
+    "phase_2": "completed_daisyui_installed_and_configured",
+    "phase_3": "pending_google_cloud_setup",
+    "phase_4": "pending_database_configuration",
+    "phase_5": "pending_calculator_implementation",
+    "phase_6": "pending_authentication",
+    "phase_7": "pending_deployment"
+  },
+  "core_patterns": {
+    "server_functions": {
+      "pattern": "export const functionName = createServerFn().handler(async ({ ctx, input }) => {})",
+      "import": "import { createServerFn } from '@tanstack/react-start'",
+      "usage": "call_directly_from_components_no_fetch_needed"
+    },
+    "routing": {
+      "structure": "file_based_routing_in_app_routes_folder",
+      "example": "app/routes/calculator.tsx becomes /calculator route",
+      "dynamic": "use_route_useParams_for_dynamic_parameters"
+    },
+    "database": {
+      "connection": "use_bun_sql_for_postgresql_connections",
+      "orm": "drizzle_orm_for_schema_management",
+      "pattern": "direct_database_calls_from_server_functions"
+    }
+  },
+  "file_structure": {
+    "routes": "app/routes/ for_pages_and_server_functions",
+    "components": "app/components/ for_reusable_ui",
+    "lib": "app/lib/ for_utilities_database_google_clients",
+    "styles": "app/styles/app.css for_tailwind_imports"
+  },
+  "google_sheets_implementation": {
+    "master_template": "agent_provides_spreadsheet_url_extract_id_from_url",
+    "user_sheets": "copy_template_per_user_via_drive_api_store_mapping_in_database",
+    "operations": "read_write_cells_using_a1_notation_Sheet1!A1:B2",
+    "permissions": "each_user_sheet_is_private_isolated_from_others",
+    "api_calls": "sheets_api_for_calculations_drive_api_for_copying"
+  },
+  "database_schema": {
+    "users": "id_serial_primary_key_email_varchar_unique_created_at_timestamp",
+    "user_sheets": "user_id_integer_references_users_google_sheet_id_varchar_template_version_integer",
+    "calculations": "user_id_integer_references_users_inputs_jsonb_results_jsonb_timestamp_timestamp"
+  },
+  "ui_development": {
+    "components": "start_with_daisyui_components_customize_with_tailwind_utility_classes",
+    "styling": "minimize_custom_css_use_tailwind_utility_classes",
+    "layout": "responsive_grid_system_consistent_spacing_scale",
+    "forms": "accessible_form_controls_with_proper_validation_and_error_states",
+    "daisyui_features": [
+      "use_daisyui_theme_system_for_consistent_colors",
+      "leverage_daisyui_components_navbar_card_button_form",
+      "apply_daisyui_utility_classes_bg_base_100_text_base_content",
+      "use_daisyui_responsive_components_dropdown_menu_modal"
+    ]
+  },
+  "implementation_details": {
+    "server_function_example": "createUserCalculator(userId, inputs) => returns calculation results",
+    "database_operation": "store_user_sheet_mapping_retrieve_calculation_history",
+    "google_api_integration": "copy_template_sheet_update_cell_values_read_results",
+    "authentication": "protect_calculator_routes_ensure_user_has_personal_sheet"
+  },
+  "performance_optimization": {
+    "caching": "cache_google_sheets_responses_minimize_api_calls",
+    "loading": "implement_loading_states_for_all_async_operations",
+    "bundling": "use_bun_built_in_bundler_for_optimization"
+  },
+  "deployment": {
+    "environment": "use_env_variables_for_google_credentials_database_urls",
+    "database": "postgresql_hosted_anywhere_bun_sql_connects",
+    "hosting": "netlify_vercel_or_any_platform_supporting_tanstack_start"
+  }
+}
