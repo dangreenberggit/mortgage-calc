@@ -1,0 +1,231 @@
+{
+    "project": {
+      "name": "mortgage-calculator-website",
+      "description": "Multi-user mortgage calculator using Google Sheets templates",
+      "architecture": "Agent controls master spreadsheet → Users get personal copies → Calculations via Google Sheets API"
+    },
+    "tech_stack": {
+      "framework": "TanStack Start",
+      "runtime": "Bun",
+      "database": "PostgreSQL + Drizzle ORM",
+      "external_apis": ["Google Sheets API", "Google Drive API"],
+      "auth": "TBD (Clerk/Auth0)",
+      "deployment": "TBD (Netlify/Vercel)"
+    },
+    "execution_phases": [
+      {
+        "phase": 1,
+        "name": "foundation_setup",
+        "status": "ready_to_execute",
+        "objective": "Initialize TanStack Start project with Bun and connect to GitHub",
+        "commands": [
+          "mkdir mortgage-calculator",
+          "cd mortgage-calculator", 
+          "bunx create-start-app@latest .",
+          "bun install",
+          "git remote add origin https://github.com/[USERNAME]/[REPO-NAME].git"
+        ],
+        "validation_test": {
+          "type": "create_test_route",
+          "file": "app/routes/test-phase-1.tsx",
+          "content": "Route that displays TanStack Start info and Bun version",
+          "test_command": "curl http://localhost:3000/test-phase-1",
+          "expected_response": "JSON with { phase: 1, tanstack_version: 'x.x.x', bun_version: 'x.x.x', status: 'success' }"
+        },
+        "completion_criteria": [
+          "test route returns expected JSON",
+          "bun dev starts without errors", 
+          "git remote is connected"
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "google_cloud_infrastructure", 
+        "status": "pending_phase_1",
+        "objective": "Set up Google Cloud project and API access",
+        "tasks": [
+          "create_google_cloud_project",
+          "enable_sheets_drive_apis",
+          "create_service_account_credentials",
+          "setup_master_template_spreadsheet",
+          "add_credentials_to_env"
+        ],
+        "validation_test": {
+          "type": "create_api_test_script",
+          "file": "scripts/test-google-api.ts",
+          "content": "Script that reads a test cell from master template spreadsheet",
+          "test_command": "bun run scripts/test-google-api.ts",
+          "expected_response": "Successfully read cell value from master template",
+          "test_route": "app/routes/test-phase-2.tsx",
+          "route_test": "curl http://localhost:3000/test-phase-2",
+          "route_expected": "JSON with { phase: 2, google_sheets_connected: true, master_template_id: 'sheet-id', test_cell_value: 'value' }"
+        },
+        "completion_criteria": [
+          "test script reads from Google Sheet successfully",
+          "test route confirms API connection",
+          "master template spreadsheet exists and accessible"
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "database_setup",
+        "status": "pending_phase_2", 
+        "objective": "Configure PostgreSQL and user schema",
+        "tasks": [
+          "setup_postgresql_database",
+          "install_configure_drizzle_orm",
+          "create_user_schema_migration",
+          "seed_test_data"
+        ],
+        "validation_test": {
+          "type": "create_database_test",
+          "file": "scripts/test-database.ts", 
+          "content": "Script that creates, reads, updates test user record",
+          "test_command": "bun run scripts/test-database.ts",
+          "expected_response": "CRUD operations successful on users table",
+          "test_route": "app/routes/test-phase-3.tsx",
+          "route_test": "curl http://localhost:3000/test-phase-3",
+          "route_expected": "JSON with { phase: 3, database_connected: true, users_table_exists: true, test_user_created: true }"
+        },
+        "completion_criteria": [
+          "database connection established",
+          "users table created with correct schema",
+          "test CRUD operations work"
+        ]
+      },
+      {
+        "phase": 4,
+        "name": "core_calculator_logic",
+        "status": "pending_phase_3",
+        "objective": "Implement Google Sheets integration and calculator UI",
+        "tasks": [
+          "create_server_functions_sheet_operations", 
+          "implement_template_copying_logic",
+          "build_calculator_form_component",
+          "connect_form_to_server_functions"
+        ],
+        "validation_test": {
+          "type": "create_end_to_end_test",
+          "file": "app/routes/test-phase-4.tsx",
+          "content": "Full calculator test route with form and results",
+          "test_command": "curl -X POST http://localhost:3000/test-phase-4 -d '{\"loanAmount\":300000,\"rate\":5.5,\"term\":30}'",
+          "expected_response": "JSON with calculated monthly payment, total interest, etc.",
+          "manual_test": "Visit http://localhost:3000/test-phase-4 and submit form",
+          "manual_expected": "Form submits and shows calculated results"
+        },
+        "completion_criteria": [
+          "Template sheet copying works",
+          "Calculator form accepts input",
+          "Google Sheets calculations return results",
+          "End-to-end flow completes successfully"
+        ]
+      },
+      {
+        "phase": 5,
+        "name": "user_authentication",
+        "status": "pending_phase_4",
+        "objective": "Add user login and route protection", 
+        "tasks": [
+          "install_configure_auth_provider",
+          "create_login_logout_routes",
+          "protect_calculator_routes",
+          "add_user_session_management"
+        ],
+        "validation_test": {
+          "type": "create_auth_test",
+          "file": "app/routes/test-phase-5.tsx",
+          "content": "Protected route that shows user info when authenticated",
+          "test_command": "curl http://localhost:3000/test-phase-5",
+          "expected_response": "Redirect to login or authentication required message",
+          "authenticated_test": "Login via UI, then visit test route",
+          "authenticated_expected": "JSON with { phase: 5, authenticated: true, user_id: 'xxx', user_email: 'xxx' }"
+        },
+        "completion_criteria": [
+          "Login/logout flow works",
+          "Protected routes require authentication", 
+          "User session persists correctly",
+          "User info accessible in protected routes"
+        ]
+      },
+      {
+        "phase": 6,
+        "name": "user_specific_sheets",
+        "status": "pending_phase_5",
+        "objective": "Implement per-user sheet isolation",
+        "tasks": [
+          "create_user_sheet_mapping_logic",
+          "implement_sheet_creation_on_first_use",
+          "load_existing_user_data_logic",
+          "handle_template_version_tracking"
+        ],
+        "validation_test": {
+          "type": "create_user_isolation_test",
+          "file": "app/routes/test-phase-6.tsx", 
+          "content": "Test route that creates user sheet, saves data, loads data",
+          "test_command": "Requires authenticated session - manual test via browser",
+          "manual_test_steps": [
+            "Login as User A, use calculator, note results",
+            "Login as User B, use calculator with different inputs",
+            "Login back as User A, verify original data persists",
+            "Visit test route to see user sheet mapping"
+          ],
+          "expected_response": "Each user has isolated sheet, data persists per user"
+        },
+        "completion_criteria": [
+          "Each user gets personal sheet copy on first use",
+          "User data isolated from other users",
+          "User can reload their saved calculations",
+          "Database correctly maps users to sheet IDs"
+        ]
+      },
+      {
+        "phase": 7,
+        "name": "polish_and_deploy",
+        "status": "pending_phase_6", 
+        "objective": "Finalize and deploy production application",
+        "tasks": [
+          "add_comprehensive_error_handling",
+          "implement_loading_states_ui",
+          "style_calculator_interface", 
+          "setup_production_environment_variables",
+          "deploy_to_hosting_platform"
+        ],
+        "validation_test": {
+          "type": "create_health_check",
+          "file": "app/routes/health.tsx",
+          "content": "Production health check endpoint",
+          "test_command": "curl https://your-domain.com/health",
+          "expected_response": "JSON with { status: 'healthy', database: 'connected', google_api: 'connected', version: 'x.x.x' }",
+          "load_test": "Test with multiple simultaneous users",
+          "error_test": "Test error scenarios (invalid inputs, API failures)"
+        },
+        "completion_criteria": [
+          "Application deployed and accessible",
+          "Health check endpoint responds correctly",
+          "Error handling works gracefully", 
+          "UI is polished and responsive",
+          "Performance is acceptable under load"
+        ]
+      }
+    ],
+    "testing_strategy": {
+      "phase_validation": "Each phase must pass its validation test before proceeding",
+      "test_execution": "LLM agent can run tests programmatically via commands or HTTP requests",
+      "failure_handling": "If validation fails, fix issues in current phase before advancing",
+      "integration_testing": "Later phases build on earlier phase test infrastructure"
+    },
+    "immediate_actions": [
+      {
+        "action": "execute_phase_1_setup_commands",
+        "priority": "high"
+      },
+      {
+        "action": "create_phase_1_validation_test_route",
+        "priority": "high"
+      },
+      {
+        "action": "verify_phase_1_test_passes",
+        "priority": "high"
+      }
+    ]
+  }
