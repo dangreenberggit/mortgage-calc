@@ -12,10 +12,13 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestPhase1RouteImport } from './routes/test-phase-1'
+import { Route as TestMortgageCalcRouteImport } from './routes/test-mortgage-calc'
+import { Route as MortgageCalculatorRouteImport } from './routes/mortgage-calculator'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoDaisyuiRouteImport } from './routes/demo.daisyui'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
+import { ServerRoute as ApiGoogleSheetsExportServerRouteImport } from './routes/api.google-sheets-export'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -23,6 +26,16 @@ const rootServerRouteImport = createServerRootRoute()
 const TestPhase1Route = TestPhase1RouteImport.update({
   id: '/test-phase-1',
   path: '/test-phase-1',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestMortgageCalcRoute = TestMortgageCalcRouteImport.update({
+  id: '/test-mortgage-calc',
+  path: '/test-mortgage-calc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MortgageCalculatorRoute = MortgageCalculatorRouteImport.update({
+  id: '/mortgage-calculator',
+  path: '/mortgage-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -45,6 +58,12 @@ const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
   path: '/demo/start/api-request',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGoogleSheetsExportServerRoute =
+  ApiGoogleSheetsExportServerRouteImport.update({
+    id: '/api/google-sheets-export',
+    path: '/api/google-sheets-export',
+    getParentRoute: () => rootServerRouteImport,
+  } as any)
 const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
   id: '/api/demo-names',
   path: '/api/demo-names',
@@ -53,6 +72,8 @@ const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mortgage-calculator': typeof MortgageCalculatorRoute
+  '/test-mortgage-calc': typeof TestMortgageCalcRoute
   '/test-phase-1': typeof TestPhase1Route
   '/demo/daisyui': typeof DemoDaisyuiRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -60,6 +81,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mortgage-calculator': typeof MortgageCalculatorRoute
+  '/test-mortgage-calc': typeof TestMortgageCalcRoute
   '/test-phase-1': typeof TestPhase1Route
   '/demo/daisyui': typeof DemoDaisyuiRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -68,6 +91,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mortgage-calculator': typeof MortgageCalculatorRoute
+  '/test-mortgage-calc': typeof TestMortgageCalcRoute
   '/test-phase-1': typeof TestPhase1Route
   '/demo/daisyui': typeof DemoDaisyuiRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -77,6 +102,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/mortgage-calculator'
+    | '/test-mortgage-calc'
     | '/test-phase-1'
     | '/demo/daisyui'
     | '/demo/start/api-request'
@@ -84,6 +111,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/mortgage-calculator'
+    | '/test-mortgage-calc'
     | '/test-phase-1'
     | '/demo/daisyui'
     | '/demo/start/api-request'
@@ -91,6 +120,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/mortgage-calculator'
+    | '/test-mortgage-calc'
     | '/test-phase-1'
     | '/demo/daisyui'
     | '/demo/start/api-request'
@@ -99,6 +130,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MortgageCalculatorRoute: typeof MortgageCalculatorRoute
+  TestMortgageCalcRoute: typeof TestMortgageCalcRoute
   TestPhase1Route: typeof TestPhase1Route
   DemoDaisyuiRoute: typeof DemoDaisyuiRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -106,24 +139,28 @@ export interface RootRouteChildren {
 }
 export interface FileServerRoutesByFullPath {
   '/api/demo-names': typeof ApiDemoNamesServerRoute
+  '/api/google-sheets-export': typeof ApiGoogleSheetsExportServerRoute
 }
 export interface FileServerRoutesByTo {
   '/api/demo-names': typeof ApiDemoNamesServerRoute
+  '/api/google-sheets-export': typeof ApiGoogleSheetsExportServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
   '/api/demo-names': typeof ApiDemoNamesServerRoute
+  '/api/google-sheets-export': typeof ApiGoogleSheetsExportServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/demo-names'
+  fullPaths: '/api/demo-names' | '/api/google-sheets-export'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/demo-names'
-  id: '__root__' | '/api/demo-names'
+  to: '/api/demo-names' | '/api/google-sheets-export'
+  id: '__root__' | '/api/demo-names' | '/api/google-sheets-export'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
   ApiDemoNamesServerRoute: typeof ApiDemoNamesServerRoute
+  ApiGoogleSheetsExportServerRoute: typeof ApiGoogleSheetsExportServerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -133,6 +170,20 @@ declare module '@tanstack/react-router' {
       path: '/test-phase-1'
       fullPath: '/test-phase-1'
       preLoaderRoute: typeof TestPhase1RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test-mortgage-calc': {
+      id: '/test-mortgage-calc'
+      path: '/test-mortgage-calc'
+      fullPath: '/test-mortgage-calc'
+      preLoaderRoute: typeof TestMortgageCalcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mortgage-calculator': {
+      id: '/mortgage-calculator'
+      path: '/mortgage-calculator'
+      fullPath: '/mortgage-calculator'
+      preLoaderRoute: typeof MortgageCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -167,6 +218,13 @@ declare module '@tanstack/react-router' {
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
+    '/api/google-sheets-export': {
+      id: '/api/google-sheets-export'
+      path: '/api/google-sheets-export'
+      fullPath: '/api/google-sheets-export'
+      preLoaderRoute: typeof ApiGoogleSheetsExportServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/demo-names': {
       id: '/api/demo-names'
       path: '/api/demo-names'
@@ -179,6 +237,8 @@ declare module '@tanstack/react-start/server' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MortgageCalculatorRoute: MortgageCalculatorRoute,
+  TestMortgageCalcRoute: TestMortgageCalcRoute,
   TestPhase1Route: TestPhase1Route,
   DemoDaisyuiRoute: DemoDaisyuiRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
@@ -189,6 +249,7 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiDemoNamesServerRoute: ApiDemoNamesServerRoute,
+  ApiGoogleSheetsExportServerRoute: ApiGoogleSheetsExportServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)
