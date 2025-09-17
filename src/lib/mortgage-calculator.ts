@@ -299,7 +299,9 @@ export class MortgageUtils {
      * Format percentage for display
      */
     static formatPercentage(rate: number): string {
-        return `${rate.toFixed(3)}%`;
+        // Round to remove unnecessary trailing zeros
+        const rounded = Math.round(rate * 1000) / 1000;
+        return `${rounded}%`;
     }
 
     /**

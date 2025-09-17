@@ -26,31 +26,6 @@ function MortgageCalculatorPage() {
     >("idle");
     const [exportUrl, setExportUrl] = useState<string | null>(null);
 
-    // Theme switching functionality
-    useEffect(() => {
-        const handleThemeChange = (event: Event) => {
-            const target = event.target as HTMLElement;
-            if (target.hasAttribute("data-set-theme")) {
-                const theme = target.getAttribute("data-set-theme");
-                if (theme) {
-                    document.documentElement.setAttribute("data-theme", theme);
-                    localStorage.setItem("theme", theme);
-                }
-            }
-        };
-
-        // Set initial theme from localStorage
-        const savedTheme = localStorage.getItem("theme") || "light";
-        document.documentElement.setAttribute("data-theme", savedTheme);
-
-        // Add event listeners to theme buttons
-        document.addEventListener("click", handleThemeChange);
-
-        return () => {
-            document.removeEventListener("click", handleThemeChange);
-        };
-    }, []);
-
     // Load saved scenarios on mount
     useEffect(() => {
         setSavedScenarios(LocalStorageService.getAllScenarios());
@@ -132,48 +107,11 @@ function MortgageCalculatorPage() {
     const handleLoadScenario = (scenario: SavedScenario) => {
         // This would need to be passed to the calculator component
         // For now, we'll just show the scenario details
-        console.log("Load scenario:", scenario);
+        // TODO: Implement scenario loading functionality
     };
 
     return (
         <div className="min-h-screen bg-base-100">
-            <div className="navbar bg-base-100 shadow-lg">
-                <div className="navbar-start">
-                    <h1 className="text-xl font-bold">Mortgage Calculator</h1>
-                </div>
-                <div className="navbar-end">
-                    <div className="dropdown dropdown-end">
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-ghost"
-                        >
-                            Theme
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                        >
-                            <li>
-                                <button data-set-theme="light">Light</button>
-                            </li>
-                            <li>
-                                <button data-set-theme="dark">Dark</button>
-                            </li>
-                            <li>
-                                <button data-set-theme="cupcake">
-                                    Cupcake
-                                </button>
-                            </li>
-                            <li>
-                                <button data-set-theme="cyberpunk">
-                                    Cyberpunk
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <div className="container mx-auto py-8">
                 <MortgageCalculatorComponent
                     onCalculationComplete={handleCalculationComplete}

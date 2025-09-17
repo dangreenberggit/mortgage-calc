@@ -150,10 +150,10 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
     return (
         <div className="max-w-6xl mx-auto p-6 space-y-8">
             <div className="text-center">
-                <h1 className="text-4xl font-bold text-base-content mb-2">
+                <h1 className="text-4xl font-bold text-primary mb-2">
                     Mortgage Calculator
                 </h1>
-                <p className="text-base-content/70">
+                <p className="text-muted">
                     Calculate your monthly payment, total costs, and view
                     amortization schedule
                 </p>
@@ -229,7 +229,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Monthly payment estimate section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-base-content text-sm">
+                                        <span className="text-secondary text-sm">
                                             Est. Payment
                                         </span>
                                     </div>
@@ -318,10 +318,10 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                                     clampedDownPayment
                                                 );
                                             }}
-                                            className="w-full border-none outline-none bg-transparent text-gray-900 text-center"
+                                            className="w-full border-none outline-none bg-transparent text-secondary text-center"
                                             placeholder="20"
                                         />
-                                        <span className="text-gray-900 ml-1">
+                                        <span className="text-secondary ml-1">
                                             %
                                         </span>
                                     </div>
@@ -338,7 +338,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                 <div className="flex border border-base-300 rounded-md overflow-hidden bg-base-200">
                                     {/* Dollar amount section - larger */}
                                     <div className="flex-[2] px-3 py-2 flex items-center">
-                                        <span className="text-base-content">
+                                        <span className="text-primary">
                                             {formatCurrency(inputs.loanAmount)}
                                         </span>
                                     </div>
@@ -346,7 +346,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* LTV section - smaller */}
                                     <div className="flex-[1] px-3 py-2 flex items-center justify-center">
-                                        <span className="text-base-content">
+                                        <span className="text-secondary">
                                             {inputs.loanAmount > 0
                                                 ? `${Math.round((inputs.loanAmount / (inputs.loanAmount + inputs.downPayment)) * 100)}% LTV`
                                                 : "Cash"}
@@ -388,7 +388,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Monthly rate section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-gray-900 text-sm">
+                                        <span className="text-secondary text-sm">
                                             {(inputs.interestRate / 12).toFixed(
                                                 4
                                             )}
@@ -427,7 +427,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                             </div>
                         </div>
 
-                        <h3 className="text-xl font-semibold text-base-content mt-8 mb-4">
+                        <h3 className="text-xl font-semibold text-primary mt-8 mb-4">
                             Additional Costs
                         </h3>
 
@@ -459,7 +459,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Monthly amount section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-gray-900 text-sm">
+                                        <span className="text-secondary text-sm">
                                             {formatCurrency(
                                                 inputs.propertyTaxAnnual / 12
                                             )}
@@ -496,7 +496,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Monthly amount section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-gray-900 text-sm">
+                                        <span className="text-secondary text-sm">
                                             {formatCurrency(
                                                 inputs.homeInsuranceAnnual / 12
                                             )}
@@ -562,7 +562,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Annual amount section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-gray-900 text-sm">
+                                        <span className="text-secondary text-sm">
                                             {formatCurrency(
                                                 (inputs.hoaFees || 0) * 12
                                             )}
@@ -603,7 +603,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                     <div className="w-px bg-base-300"></div>
                                     {/* Percentage of loan section - smaller */}
                                     <div className="flex-[1] px-3 py-2 bg-base-100 flex items-center justify-center">
-                                        <span className="text-gray-900 text-sm">
+                                        <span className="text-secondary text-sm">
                                             {inputs.loanAmount > 0
                                                 ? `${(((inputs.closingCosts || 0) / inputs.loanAmount) * 100).toFixed(1)}%`
                                                 : "0%"}
@@ -651,155 +651,164 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                         ) : calculation ? (
                             <div className="space-y-4">
                                 {/* Monthly Payment Breakdown */}
-                                <div className="alert alert-info">
-                                    <h3 className="text-lg font-semibold mb-3">
-                                        Monthly Payment
-                                    </h3>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Principal & Interest:
-                                            </span>
-                                            <span className="font-semibold">
-                                                {formatCurrency(
-                                                    calculation.principalAndInterest
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Property Tax:
-                                            </span>
-                                            <span>
-                                                {formatCurrency(
-                                                    calculation.propertyTaxMonthly
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Home Insurance:
-                                            </span>
-                                            <span>
-                                                {formatCurrency(
-                                                    calculation.homeInsuranceMonthly
-                                                )}
-                                            </span>
-                                        </div>
-                                        {calculation.pmiMonthly > 0 && (
-                                            <div className="flex justify-between">
-                                                <span className="text-base-content/70">
-                                                    PMI:
+                                <div className="card bg-info text-info-content">
+                                    <div className="card-body">
+                                        <h3 className="card-title text-lg font-semibold mb-3">
+                                            Monthly Payment
+                                        </h3>
+                                        <div className="space-y-2 w-full">
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-info-content/80 font-medium">
+                                                    Principal & Interest:
                                                 </span>
-                                                <span>
+                                                <span className="font-semibold text-info-content">
                                                     {formatCurrency(
-                                                        calculation.pmiMonthly
+                                                        calculation.principalAndInterest
                                                     )}
                                                 </span>
                                             </div>
-                                        )}
-                                        {calculation.hoaFeesMonthly > 0 && (
-                                            <div className="flex justify-between">
-                                                <span className="text-base-content/70">
-                                                    HOA Fees:
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-info-content/80 font-medium">
+                                                    Property Tax:
                                                 </span>
-                                                <span>
+                                                <span className="font-semibold text-info-content">
                                                     {formatCurrency(
-                                                        calculation.hoaFeesMonthly
+                                                        calculation.propertyTaxMonthly
                                                     )}
                                                 </span>
                                             </div>
-                                        )}
-                                        <hr className="border-base-300" />
-                                        <div className="flex justify-between text-lg font-bold">
-                                            <span>Total Monthly Payment:</span>
-                                            <span className="text-info">
-                                                {formatCurrency(
-                                                    calculation.totalMonthlyPayment
-                                                )}
-                                            </span>
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-info-content/80 font-medium">
+                                                    Home Insurance:
+                                                </span>
+                                                <span className="font-semibold text-info-content">
+                                                    {formatCurrency(
+                                                        calculation.homeInsuranceMonthly
+                                                    )}
+                                                </span>
+                                            </div>
+                                            {calculation.pmiMonthly > 0 && (
+                                                <div className="flex justify-between w-full">
+                                                    <span className="text-info-content/80 font-medium">
+                                                        PMI:
+                                                    </span>
+                                                    <span className="font-semibold text-info-content">
+                                                        {formatCurrency(
+                                                            calculation.pmiMonthly
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            )}
+                                            {calculation.hoaFeesMonthly > 0 && (
+                                                <div className="flex justify-between w-full">
+                                                    <span className="text-info-content/80 font-medium">
+                                                        HOA Fees:
+                                                    </span>
+                                                    <span className="font-semibold text-info-content">
+                                                        {formatCurrency(
+                                                            calculation.hoaFeesMonthly
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <hr className="border-info-content/30" />
+                                            <div className="flex justify-between w-full text-lg font-bold">
+                                                <span className="text-info-content">
+                                                    Total Monthly Payment:
+                                                </span>
+                                                <span className="text-info-content">
+                                                    {formatCurrency(
+                                                        calculation.totalMonthlyPayment
+                                                    )}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Total Costs */}
-                                <div className="alert alert-success">
-                                    <h3 className="text-lg font-semibold mb-3">
-                                        Total Costs
-                                    </h3>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Total Interest:
-                                            </span>
-                                            <span className="font-semibold">
-                                                {formatCurrency(
-                                                    calculation.totalInterest
-                                                )}
-                                            </span>
-                                        </div>
-                                        {calculation.totalPMI > 0 && (
-                                            <div className="flex justify-between">
-                                                <span className="text-base-content/70">
-                                                    Total PMI:
+                                <div className="card bg-success text-success-content">
+                                    <div className="card-body">
+                                        <h3 className="card-title text-lg font-semibold mb-3">
+                                            Total Costs
+                                        </h3>
+                                        <div className="space-y-2 w-full">
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-success-content/80 font-medium">
+                                                    Total Interest:
                                                 </span>
-                                                <span>
+                                                <span className="font-semibold text-success-content">
                                                     {formatCurrency(
-                                                        calculation.totalPMI
+                                                        calculation.totalInterest
                                                     )}
                                                 </span>
                                             </div>
-                                        )}
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Total Payments:
-                                            </span>
-                                            <span className="font-semibold">
-                                                {formatCurrency(
-                                                    calculation.totalPayments
-                                                )}
-                                            </span>
+                                            {calculation.totalPMI > 0 && (
+                                                <div className="flex justify-between w-full">
+                                                    <span className="text-success-content/80 font-medium">
+                                                        Total PMI:
+                                                    </span>
+                                                    <span className="font-semibold text-success-content">
+                                                        {formatCurrency(
+                                                            calculation.totalPMI
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-success-content/80 font-medium">
+                                                    Total Payments:
+                                                </span>
+                                                <span className="font-semibold text-success-content">
+                                                    {formatCurrency(
+                                                        calculation.totalPayments
+                                                    )}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Loan Metrics */}
-                                <div className="alert">
-                                    <h3 className="text-lg font-semibold mb-3">
-                                        Loan Metrics
-                                    </h3>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Loan-to-Value (LTV):
-                                            </span>
-                                            <span>
-                                                {formatPercentage(
-                                                    MortgageUtils.calculateLTV(
-                                                        calculation.loanAmount,
-                                                        calculation.purchasePrice
-                                                    )
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Monthly Rate:
-                                            </span>
-                                            <span>
-                                                {formatPercentage(
-                                                    calculation.monthlyRate *
-                                                        100
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-base-content/70">
-                                                Number of Payments:
-                                            </span>
-                                            <span>
-                                                {calculation.loanTermYears * 12}
-                                            </span>
+                                <div className="card bg-base-100 border border-base-300">
+                                    <div className="card-body">
+                                        <h3 className="card-title text-lg font-semibold mb-3">
+                                            Loan Metrics
+                                        </h3>
+                                        <div className="space-y-2 w-full">
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-base-content/70 font-medium">
+                                                    Loan-to-Value (LTV):
+                                                </span>
+                                                <span className="font-semibold text-base-content">
+                                                    {formatPercentage(
+                                                        MortgageUtils.calculateLTV(
+                                                            calculation.loanAmount,
+                                                            calculation.purchasePrice
+                                                        )
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-base-content/70 font-medium">
+                                                    Monthly Rate:
+                                                </span>
+                                                <span className="font-semibold text-base-content">
+                                                    {formatPercentage(
+                                                        calculation.monthlyRate *
+                                                            100
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between w-full">
+                                                <span className="text-base-content/70 font-medium">
+                                                    Number of Payments:
+                                                </span>
+                                                <span className="font-semibold text-base-content">
+                                                    {calculation.loanTermYears *
+                                                        12}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -822,7 +831,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                                 )}
                             </div>
                         ) : (
-                            <div className="text-center text-base-content/60 py-8">
+                            <div className="text-center text-muted py-8">
                                 {inputs.loanAmount === 0
                                     ? "Cash purchase - no mortgage payment required"
                                     : "Enter loan details to see calculations"}
@@ -894,7 +903,7 @@ const MortgageCalculatorComponent = memo(function MortgageCalculatorComponent({
                             </table>
                             {amortizationTable.length >
                                 AMORTIZATION_DISPLAY_LIMIT && (
-                                <div className="text-center mt-4 text-base-content/60">
+                                <div className="text-center mt-4 text-muted">
                                     Showing first {AMORTIZATION_DISPLAY_LIMIT}{" "}
                                     payments of {amortizationTable.length} total
                                     payments
