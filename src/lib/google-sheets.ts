@@ -19,8 +19,8 @@ export interface MortgageCalculationData {
 }
 
 export class GoogleSheetsService {
-    private sheets: any;
-    private config: GoogleSheetsConfig;
+    public sheets: any;
+    public config: GoogleSheetsConfig;
 
     constructor(config: GoogleSheetsConfig) {
         this.config = config;
@@ -209,10 +209,11 @@ export class GoogleSheetsService {
      */
     async createUserSpreadsheet(userId: string, userName: string) {
         try {
-            const drive = google.drive({
-                version: "v3",
-                auth: this.sheets.auth,
-            });
+            // Note: Drive API not needed for this implementation
+            // const drive = google.drive({
+            //     version: "v3",
+            //     auth: this.sheets.auth,
+            // });
 
             // Create new spreadsheet
             const spreadsheet = await this.sheets.spreadsheets.create({
@@ -284,4 +285,3 @@ export function createGoogleSheetsService(): GoogleSheetsService {
 
     return new GoogleSheetsService(config);
 }
-

@@ -104,7 +104,7 @@ function MortgageCalculatorPage() {
         }
     };
 
-    const handleLoadScenario = (scenario: SavedScenario) => {
+    const handleLoadScenario = (_scenario: SavedScenario) => {
         // This would need to be passed to the calculator component
         // For now, we'll just show the scenario details
         // TODO: Implement scenario loading functionality

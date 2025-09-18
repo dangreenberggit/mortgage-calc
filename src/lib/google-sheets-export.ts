@@ -5,6 +5,10 @@ import {
 } from "./mortgage-calculator";
 import { GoogleSheetsService } from "./google-sheets";
 
+/**
+ * Service for exporting mortgage calculations to Google Sheets
+ * Creates new sheets within the master template spreadsheet for each calculation
+ */
 export class GoogleSheetsExportService {
     private sheetsService: GoogleSheetsService;
 
@@ -13,60 +17,57 @@ export class GoogleSheetsExportService {
     }
 
     /**
-     * Export mortgage calculation to a simple Google Sheets spreadsheet
+     * Export mortgage calculation to a new sheet in the existing spreadsheet
+     *
+     * @param inputs - The mortgage input parameters
+     * @param calculation - The calculated mortgage results
+     * @param amortizationTable - The amortization schedule
+     * @param scenarioName - Name for the scenario (will be sanitized for sheet name)
+     * @returns Object containing spreadsheet ID, URL, and new sheet ID
      */
     async exportMortgageCalculation(
         inputs: MortgageInputs,
         calculation: MortgageCalculation,
         amortizationTable: AmortizationEntry[],
         scenarioName: string
-    ): Promise<{ spreadsheetId: string; url: string }> {
+    ): Promise<{ spreadsheetId: string; url: string; sheetId: number }> {
         try {
-            // Create a new spreadsheet
-            const spreadsheet = await this.sheetsService[
-                "sheets"
-            ].spreadsheets.create({
-                resource: {
-                    properties: {
-                        title: `Mortgage Calculator - ${scenarioName}`,
+            const spreadsheetId = this.sheetsService.config.spreadsheetId;
+            const sheetName = `Mortgage_${scenarioName.replace(/[^a-zA-Z0-9]/g, "_")}_${Date.now()}`;
+
+            // Create a new sheet in the existing spreadsheet
+            const response =
+                await this.sheetsService.sheets.spreadsheets.batchUpdate({
+                    spreadsheetId,
+                    resource: {
+                        requests: [
+                            {
+                                addSheet: {
+                                    properties: {
+                                        title: sheetName,
+                                        gridProperties: {
+                                            rowCount: 200,
+                                            columnCount: 10,
+                                        },
+                                    },
+                                },
+                            },
+                        ],
                     },
-                    sheets: [
-                        {
-                            properties: {
-                                title: "Summary",
-                                gridProperties: {
-                                    rowCount: 50,
-                                    columnCount: 4,
-                                },
-                            },
-                        },
-                        {
-                            properties: {
-                                title: "Amortization",
-                                gridProperties: {
-                                    rowCount: 500,
-                                    columnCount: 8,
-                                },
-                            },
-                        },
-                    ],
-                },
-            });
+                });
 
-            const spreadsheetId = spreadsheet.data.spreadsheetId!;
+            const newSheetId =
+                response.data.replies?.[0]?.addSheet?.properties?.sheetId!;
 
-            // Populate summary sheet
-            await this.populateSummarySheet(spreadsheetId, inputs, calculation);
+            // Populate the new sheet with summary data
+            await this.populateSummarySheet(sheetName, inputs, calculation);
 
-            // Populate amortization sheet
-            await this.populateAmortizationSheet(
-                spreadsheetId,
-                amortizationTable
-            );
+            // Populate amortization data in the same sheet (starting from row 30)
+            await this.populateAmortizationSheet(sheetName, amortizationTable);
 
-            const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`;
+            const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit#gid=${newSheetId}`;
 
-            return { spreadsheetId, url };
+            return { spreadsheetId, url, sheetId: newSheetId };
         } catch (error) {
             console.error("Error exporting to Google Sheets:", error);
             throw error;
@@ -77,7 +78,7 @@ export class GoogleSheetsExportService {
      * Populate the summary sheet with calculation results
      */
     private async populateSummarySheet(
-        spreadsheetId: string,
+        sheetName: string,
         inputs: MortgageInputs,
         calculation: MortgageCalculation
     ): Promise<void> {
@@ -120,14 +121,14 @@ export class GoogleSheetsExportService {
             ["Number of Payments", calculation.loanTermYears * 12, "", ""],
         ];
 
-        await this.sheetsService.writeRange("Summary!A1:D27", summaryData);
+        await this.sheetsService.writeRange(`${sheetName}!A1:D27`, summaryData);
     }
 
     /**
      * Populate the amortization sheet
      */
     private async populateAmortizationSheet(
-        spreadsheetId: string,
+        sheetName: string,
         amortizationTable: AmortizationEntry[]
     ): Promise<void> {
         // Headers
@@ -144,7 +145,7 @@ export class GoogleSheetsExportService {
             ],
         ];
 
-        await this.sheetsService.writeRange("Amortization!A1:H1", headers);
+        await this.sheetsService.writeRange(`${sheetName}!A30:H30`, headers);
 
         // Data (limit to first 100 payments to avoid API limits)
         const limitedData = amortizationTable
@@ -162,7 +163,7 @@ export class GoogleSheetsExportService {
 
         if (limitedData.length > 0) {
             await this.sheetsService.writeRange(
-                `Amortization!A2:H${1 + limitedData.length}`,
+                `${sheetName}!A31:H${30 + limitedData.length}`,
                 limitedData
             );
         }
@@ -170,7 +171,7 @@ export class GoogleSheetsExportService {
         // Add note if truncated
         if (amortizationTable.length > 100) {
             await this.sheetsService.writeRange(
-                `Amortization!A${2 + limitedData.length}:H${2 + limitedData.length}`,
+                `${sheetName}!A${31 + limitedData.length}:H${31 + limitedData.length}`,
                 [
                     [
                         "Note: Showing first 100 payments only",
